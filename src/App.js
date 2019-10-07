@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Route } from "react-router-dom";
 import data from "./data";
 
@@ -11,38 +11,34 @@ import CartContext from "./contexts/CartContext";
 import useLocalStorage from "./components/useLocalStorage";
 
 function App() {
-  const [cart, setCart] = useLocalStorage("cart",[]);
-  const [products] = useLocalStorage("products",data);
+  const [cart, setCart] = useLocalStorage("cart", []);
+  const [products] = useLocalStorage("products", data);
 
   const addItem = item => {
     setCart([...cart, item]);
   };
 
   const removeFromCart = id => e => {
-	e.preventDefault();
-   const newCart = cart.filter((item) => {
-     return item.id !== id; 
-	});
-	setCart(newCart);
+    e.preventDefault();
+    const newCart = cart.filter(item => {
+      return item.id !== id;
+    });
+    setCart(newCart);
   };
 
   return (
-      <div className="App">
-    <ProductContext.Provider value={{products, addItem}}>
-		<CartContext.Provider value={{cart,setCart,removeFromCart}}>
-        <Navigation />
+    <div className="App">
+      <ProductContext.Provider value={{ products, addItem }}>
+        <CartContext.Provider value={{ cart, setCart, removeFromCart }}>
+          <Navigation />
 
-        {/* Routes */}
-        <Route
-          exact
-          path="/"
-          component={Products}
-        />
+          {/* Routes */}
+          <Route exact path="/" component={Products} />
 
-        <Route path="/cart" component={ShoppingCart} />
-		</CartContext.Provider>
-    </ProductContext.Provider>
-      </div>
+          <Route path="/cart" component={ShoppingCart} />
+        </CartContext.Provider>
+      </ProductContext.Provider>
+    </div>
   );
 }
 
